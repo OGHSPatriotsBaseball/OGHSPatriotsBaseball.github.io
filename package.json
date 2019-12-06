@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Website for OGH Patriots Baseball",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "buildSchedule": "node ./generators/scheduleFilebaseGenerator.js"
   },
   "repository": {
     "type": "git",

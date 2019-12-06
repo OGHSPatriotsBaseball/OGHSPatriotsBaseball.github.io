@@ -2,3 +2,21 @@ html,body,h1,h2,h3,h4,h5,h6 {
     font-family: "Roboto", sans-serif;
     text-transform: uppercase;
 }
+
+table {
+    border: 3px black solid;
+    border-collapse: collapse;
+    text-align: left;
+    width: 50%;
+}
+
+th {
+    border-bottom: 2px black solid;
+    border-left: 1px black solid;
+    background-color: lightgray;
+}
+
+td {
+    border: 1px black solid;
+    position: relative;
+}

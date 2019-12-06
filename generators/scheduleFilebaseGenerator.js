@@ -3,7 +3,7 @@
 const convertExcelToJsonService = require('../services/convertExcelToJson.service');
 const writeToFileService = require('../services/writeToFile.service');
 
-(function buildSchedulesFilebase () {
+(function buildScheduleFilebase () {
     const sourceFile = 'filebase/OGHS FIELD USE SCHEDULE.xls';
 
     const statsObject = convertExcelToJsonService.convert(sourceFile);
