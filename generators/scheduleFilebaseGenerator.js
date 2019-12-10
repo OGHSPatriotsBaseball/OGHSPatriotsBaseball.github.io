@@ -8,7 +8,7 @@ const writeToFileService = require('../services/writeToFile.service');
 
     const statsObject = convertExcelToJsonService.convert(sourceFile);
 
-    const filebaseVarName = 'stats';
+    const filebaseVarName = 'schedule';
     const statsFilebase = 'filebase/scheduleFilebase.js';
 
     writeToFileService.writeToFile(filebaseVarName, statsObject, statsFilebase);
