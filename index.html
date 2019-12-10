@@ -16,6 +16,18 @@
                 <div class="w3-twothird w3-container">
                     <h1 class="w3-text-black">OGHS Patriots Baseball</h1>
 
+                    <select id='month-selector' name='month'>
+                        <option value='Month'>Month</option>
+                    </select>
+                    
+                    <div></div>
+                    <br>
+
+                    <table id="schedule-table" cellpadding="8">
+                        <thead id='schedule-header'></thead>
+                        <tbody id='schedule-body'></tbody>
+                    </table>
+
                     <table id="key-table" cellpadding="5">
                         <thead>
                             <tr>
@@ -45,5 +57,23 @@
                 </div>
             </div>
         </div>
+        
+        <script src='./controllers/scheduleController.js'></script>
+        <script src='./filebase/scheduleFilebase.js'></script>    
+        <script>
+            // const monthSelector = document.getElementById('month-selector');
+            // addSelectorOptions(monthSelector, schedule, document);
+
+            // document.addEventListener('DOMContentLoaded', function () {
+            //     document.querySelector('select[name="month"]').onchange=changeEventHandler;
+            // }, false);
+
+            // function changeEventHandler() {                
+            //     const scheduleHeader = document.getElementById('schedule-header');
+            //     const scheduleBody = document.getElementById('schedule-body');
+
+            //     buildStatisticsTable(schedule[this.value], scheduleHeader, scheduleBody, document)
+            // }
+        </script>
     </body>
 </html>

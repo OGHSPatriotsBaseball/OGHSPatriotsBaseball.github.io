@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "Website for OGH Patriots Baseball",
   "scripts": {
-    "buildSchedule": "node ./generators/scheduleFilebaseGenerator.js"
+    "buildSchedule": "node ./generators/scheduleFilebaseGenerator.js",
+    "test": "mocha ./tests/*.test.js"
   },
   "repository": {
     "type": "git",
@@ -17,5 +18,8 @@
   "homepage": "https://OGHSPatriotsBaseball.github.io",
   "dependencies": {
     "convert-excel-to-json": "^1.6.1"
+  },
+  "devDependencies": {
+    "mocha": "^6.2.2"
   }
 }
