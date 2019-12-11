@@ -21,17 +21,22 @@ function createTextNode(text) {
 
 describe('Schedule Controller Tests', () => {
     let scheduleController;
-    const monthSelectorMock = {
-        appendChild,
-        children: [],
-        type: 'select'
-    };
     const documentMock = {
         createElement,
         createTextNode
     };
 
-    describe('addSelectorOptions', () => {
+    describe('addSelectorOptions', () => { 
+        let monthSelectorMock;
+
+        beforeEach(() => {
+            monthSelectorMock = {
+                appendChild,
+                children: [],
+                type: 'select'
+            };
+        });
+
         it('should add options for the selector when there is an empty schedule', () => {
             const schedule = {};
             const expectedChildren = [];
@@ -74,6 +79,38 @@ describe('Schedule Controller Tests', () => {
             scheduleController.addSelectorOptions(monthSelectorMock, documentMock);
 
             assert.equal(JSON.stringify(monthSelectorMock.children), JSON.stringify(expectedChildren));
+        });
+    });
+
+    describe('buildSchedule', () => {
+        let tableHeaderMock;
+        let tableBodyMock;
+
+        beforeEach(() => {
+            tableHeaderMock = {
+                appendChild,
+                children: [],
+                type: 'thead'
+            };
+            tableBodyMock = {
+                appendChild,
+                children: [],
+                type: 'tbody'
+            };
+        });
+
+        it('should clear the child elements from the table header and body', () => {
+            tableHeaderMock.appendChild('tr');
+            tableHeaderMock.appendChild('tr');
+            tableBodyMock.appendChild('tr');
+            const schedule = {};
+            const expectedChildren = [];
+            scheduleController = scheduleControllerConstructor(schedule);
+
+            scheduleController.buildSchedule(tableHeaderMock, tableBodyMock, documentMock);
+
+            assert.equal(JSON.stringify(tableHeaderMock.children), JSON.stringify(expectedChildren));
+            assert.equal(JSON.stringify(tableBodyMock.children), JSON.stringify(expectedChildren));
         });
     });
 });
