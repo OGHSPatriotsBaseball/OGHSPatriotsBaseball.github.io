@@ -53,17 +53,20 @@ describe('Schedule Controller Tests', () => {
                 {
                     appendChild,
                     children: [{text: 'month1'}],
-                    type: 'option'
+                    type: 'option',
+                    value: 'month1'
                 },
                 {
                     appendChild,
                     children: [{text: 'month2'}],
-                    type: 'option'
+                    type: 'option',
+                    value: 'month2'
                 },
                 {
                     appendChild,
                     children: [{text: 'month3'}],
-                    type: 'option'
+                    type: 'option',
+                    value: 'month3'
                 }
             ];
             scheduleController = scheduleControllerConstructor(schedule);
