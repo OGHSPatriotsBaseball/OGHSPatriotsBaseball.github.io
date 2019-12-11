@@ -61,8 +61,10 @@
         <script src='./controllers/scheduleController.js'></script>
         <script src='./filebase/scheduleFilebase.js'></script>    
         <script>
-            // const monthSelector = document.getElementById('month-selector');
-            // addSelectorOptions(monthSelector, schedule, document);
+            scheduleController = scheduleController(schedule);
+
+            const monthSelector = document.getElementById('month-selector');
+            scheduleController.addSelectorOptions(monthSelector, document);
 
             // document.addEventListener('DOMContentLoaded', function () {
             //     document.querySelector('select[name="month"]').onchange=changeEventHandler;
