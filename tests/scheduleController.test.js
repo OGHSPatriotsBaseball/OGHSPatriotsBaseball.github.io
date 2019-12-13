@@ -131,10 +131,62 @@ describe('Schedule Controller Tests', () => {
             const expectedChildren = [];
             scheduleController = scheduleControllerConstructor(schedule);
 
-            scheduleController.buildSchedule(tableHeaderMock, tableBodyMock, documentMock);
+            scheduleController.buildSchedule(tableHeaderMock, tableBodyMock);
 
             assert.equal(JSON.stringify(tableHeaderMock.children), JSON.stringify(expectedChildren));
             assert.equal(JSON.stringify(tableBodyMock.children), JSON.stringify(expectedChildren));
+        });
+        
+        it('should build the table header for the selected month', () => {
+            const schedule = {
+                month1: [
+                    {
+                        team: 'team1',
+                        1: 'VAR',
+                        7: 'JV'
+                    },
+                    {
+                        team: 'team2',
+                        2: 'JV',
+                        3: 'BC'
+                    }
+                ],
+                month2: [
+                    {
+                        team: 'team2',
+                        4: 'VAR',
+                        20: 'VAR'
+                    },
+                    {
+                        team: 'team3',
+                        6: 'JV',
+                        9: 'JV'
+                    }
+                ]
+            };
+            const selectedMonth = 'month2';
+            const expectedChildren = [
+                {
+                    appendChild,
+                    // children: [{text: 'month1'}],
+                    type: 'th'
+                },
+                {
+                    appendChild,
+                    // children: [{text: 'month2'}],
+                    type: 'th'
+                },
+                {
+                    appendChild,
+                    // children: [{text: 'month3'}],
+                    type: 'th'
+                }
+            ];
+            scheduleController = scheduleControllerConstructor(schedule);
+
+            scheduleController.buildSchedule(tableHeaderMock, tableBodyMock, selectedMonth);
+
+            assert.equal(JSON.stringify(tableHeaderMock.children), JSON.stringify(expectedChildren));
         });
     });
 });
