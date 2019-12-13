@@ -15,13 +15,16 @@ function scheduleController(schedule) {
         });
     }
 
+    function removeAllChildNodes(element) {
+        while (element.hasChildNodes()) {
+            element.removeChild(element.firstChild);
+        }
+    }
+
     function buildSchedule(tableHeader, tableBody) {
-        while(tableHeader.hasChildNodes()) {
-            tableHeader.removeChild(tableHeader.firstChild);
-        }
-        while(tableBody.hasChildNodes()) {
-            tableBody.removeChild(tableBody.firstChild);
-        }
+        removeAllChildNodes(tableHeader);
+        removeAllChildNodes(tableBody);
+
     }
 
     return {
