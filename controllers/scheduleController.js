@@ -15,8 +15,18 @@ function scheduleController(schedule) {
         });
     }
 
+    function buildSchedule(tableHeader, tableBody) {
+        while(tableHeader.hasChildNodes()) {
+            tableHeader.removeChild(tableHeader.firstChild);
+        }
+        while(tableBody.hasChildNodes()) {
+            tableBody.removeChild(tableBody.firstChild);
+        }
+    }
+
     return {
-        addSelectorOptions
+        addSelectorOptions,
+        buildSchedule
     };
 }
 

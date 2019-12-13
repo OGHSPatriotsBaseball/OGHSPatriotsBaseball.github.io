@@ -19,6 +19,26 @@ function createTextNode(text) {
     };
 }
 
+function hasChildNodes() {
+    this.firstChild = this.children[0];
+    return this.children.length > 0;
+}
+
+function removeChild(childToRemove) {
+    let indexOfChildToRemove = -1;
+
+    this.children.forEach((childNode, index) => {
+        if (childNode === childToRemove) {
+            indexOfChildToRemove = index;
+        }
+    });
+
+    if (indexOfChildToRemove >= 0) {
+        this.children.splice(indexOfChildToRemove, 1);
+        this.firstChild = this.children[0];
+    }
+}
+
 describe('Schedule Controller Tests', () => {
     let scheduleController;
     const documentMock = {
@@ -89,20 +109,24 @@ describe('Schedule Controller Tests', () => {
         beforeEach(() => {
             tableHeaderMock = {
                 appendChild,
+                hasChildNodes,
+                removeChild,
                 children: [],
                 type: 'thead'
             };
             tableBodyMock = {
                 appendChild,
+                hasChildNodes,
+                removeChild,
                 children: [],
                 type: 'tbody'
             };
         });
 
         it('should clear the child elements from the table header and body', () => {
-            tableHeaderMock.appendChild('tr');
-            tableHeaderMock.appendChild('tr');
-            tableBodyMock.appendChild('tr');
+            tableHeaderMock.appendChild(createElement('tr'));
+            tableHeaderMock.appendChild(createElement('tr'));
+            tableBodyMock.appendChild(createElement('tr'));
             const schedule = {};
             const expectedChildren = [];
             scheduleController = scheduleControllerConstructor(schedule);
