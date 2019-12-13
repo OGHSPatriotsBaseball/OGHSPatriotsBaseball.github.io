@@ -39,6 +39,16 @@ function removeChild(childToRemove) {
     }
 }
 
+function appendHeadersFor30DayMonth(expectedChildren) {
+    for (let i = 1; i <= 30; i++) {
+        expectedChildren.push({
+            appendChild,
+            children: [{ text: `${i}` }],
+            type: 'th'
+        });
+    }
+}
+
 describe('Schedule Controller Tests', () => {
     let scheduleController;
     const documentMock = {
@@ -46,7 +56,7 @@ describe('Schedule Controller Tests', () => {
         createTextNode
     };
 
-    describe('addSelectorOptions', () => { 
+    describe('addSelectorOptions', () => {
         let monthSelectorMock;
 
         beforeEach(() => {
@@ -77,19 +87,19 @@ describe('Schedule Controller Tests', () => {
             const expectedChildren = [
                 {
                     appendChild,
-                    children: [{text: 'month1'}],
+                    children: [{ text: 'month1' }],
                     type: 'option',
                     value: 'month1'
                 },
                 {
                     appendChild,
-                    children: [{text: 'month2'}],
+                    children: [{ text: 'month2' }],
                     type: 'option',
                     value: 'month2'
                 },
                 {
                     appendChild,
-                    children: [{text: 'month3'}],
+                    children: [{ text: 'month3' }],
                     type: 'option',
                     value: 'month3'
                 }
@@ -105,6 +115,33 @@ describe('Schedule Controller Tests', () => {
     describe('buildSchedule', () => {
         let tableHeaderMock;
         let tableBodyMock;
+        const emptySchedule = {};
+        const schedule = {
+            month1: [
+                {
+                    team: 'team1',
+                    1: 'VAR',
+                    7: 'JV'
+                },
+                {
+                    team: 'team2',
+                    2: 'JV',
+                    3: 'BC'
+                }
+            ],
+            month2: [
+                {
+                    team: 'team2',
+                    4: 'VAR',
+                    20: 'VAR'
+                },
+                {
+                    team: 'team3',
+                    6: 'JV',
+                    9: 'JV'
+                }
+            ]
+        };
 
         beforeEach(() => {
             tableHeaderMock = {
@@ -127,64 +164,38 @@ describe('Schedule Controller Tests', () => {
             tableHeaderMock.appendChild(createElement('tr'));
             tableHeaderMock.appendChild(createElement('tr'));
             tableBodyMock.appendChild(createElement('tr'));
-            const schedule = {};
             const expectedChildren = [];
-            scheduleController = scheduleControllerConstructor(schedule);
+            scheduleController = scheduleControllerConstructor(emptySchedule);
 
-            scheduleController.buildSchedule(tableHeaderMock, tableBodyMock);
+            scheduleController.buildSchedule(tableHeaderMock, tableBodyMock, documentMock);
 
             assert.equal(JSON.stringify(tableHeaderMock.children), JSON.stringify(expectedChildren));
             assert.equal(JSON.stringify(tableBodyMock.children), JSON.stringify(expectedChildren));
         });
-        
-        it('should build the table header for the selected month', () => {
-            const schedule = {
-                month1: [
-                    {
-                        team: 'team1',
-                        1: 'VAR',
-                        7: 'JV'
-                    },
-                    {
-                        team: 'team2',
-                        2: 'JV',
-                        3: 'BC'
-                    }
-                ],
-                month2: [
-                    {
-                        team: 'team2',
-                        4: 'VAR',
-                        20: 'VAR'
-                    },
-                    {
-                        team: 'team3',
-                        6: 'JV',
-                        9: 'JV'
-                    }
-                ]
-            };
+
+        it('should not build a schedule if the selected month does not exist in the schedule', () => {
+            const selectedMonthThatDoesNotExist = 'Nonexistant Month'
+            const expectedChildren = [];
+            scheduleController = scheduleControllerConstructor(schedule);
+
+            scheduleController.buildSchedule(tableHeaderMock, tableBodyMock, documentMock, selectedMonthThatDoesNotExist);
+
+            assert.equal(JSON.stringify(tableHeaderMock.children), JSON.stringify(expectedChildren));
+        });
+
+        it('should build the table header for the selected 30 day month', () => {
             const selectedMonth = 'month2';
             const expectedChildren = [
                 {
                     appendChild,
-                    // children: [{text: 'month1'}],
-                    type: 'th'
-                },
-                {
-                    appendChild,
-                    // children: [{text: 'month2'}],
-                    type: 'th'
-                },
-                {
-                    appendChild,
-                    // children: [{text: 'month3'}],
+                    children: [{ text: 'team' }],
                     type: 'th'
                 }
             ];
+            appendHeadersFor30DayMonth(expectedChildren)
             scheduleController = scheduleControllerConstructor(schedule);
 
-            scheduleController.buildSchedule(tableHeaderMock, tableBodyMock, selectedMonth);
+            scheduleController.buildSchedule(tableHeaderMock, tableBodyMock, documentMock, selectedMonth);
 
             assert.equal(JSON.stringify(tableHeaderMock.children), JSON.stringify(expectedChildren));
         });

@@ -21,10 +21,27 @@ function scheduleController(schedule) {
         }
     }
 
-    function buildSchedule(tableHeader, tableBody) {
+    function buildSchedule(tableHeader, tableBody, document, selectedMonth) {
         removeAllChildNodes(tableHeader);
         removeAllChildNodes(tableBody);
 
+        const scheduleForSelectedMonth = schedule[selectedMonth];
+
+        if (!scheduleForSelectedMonth) {
+            return;
+        }
+
+        const teamHeaderNode = document.createElement('th');
+        const teamHeaderTextNode = document.createTextNode('team');
+        teamHeaderNode.appendChild(teamHeaderTextNode);
+        tableHeader.appendChild(teamHeaderNode);
+
+        for (let i = 1; i <= 30; i++) {
+            const dateHeaderNode = document.createElement('th');
+            const dateHeaderTextNode = document.createTextNode(`${i}`);
+            dateHeaderNode.appendChild(dateHeaderTextNode);
+            tableHeader.appendChild(dateHeaderNode);
+        }
     }
 
     return {
