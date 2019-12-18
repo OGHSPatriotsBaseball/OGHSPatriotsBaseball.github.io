@@ -1,4 +1,5 @@
 const assert = require('assert');
+const sinon = require('sinon');
 const scheduleControllerConstructor = require('../controllers/scheduleController');
 
 function appendChild(childNode) {
@@ -39,8 +40,8 @@ function removeChild(childToRemove) {
     }
 }
 
-function appendHeadersFor30DayMonth(expectedChildren) {
-    for (let i = 1; i <= 30; i++) {
+function appendHeadersForMonth(expectedChildren, days = 30) {
+    for (let i = 1; i <= days; i++) {
         expectedChildren.push({
             appendChild,
             children: [{ text: `${i}` }],
@@ -115,6 +116,11 @@ describe('Schedule Controller Tests', () => {
     describe('buildSchedule', () => {
         let tableHeaderMock;
         let tableBodyMock;
+        let realDateClass;
+        let dateClassMock;
+        let dateObjectMock;
+        const currentYear = 1996;
+        const currentMonth = 2;
         const emptySchedule = {};
         const schedule = {
             month1: [
@@ -158,6 +164,25 @@ describe('Schedule Controller Tests', () => {
                 children: [],
                 type: 'tbody'
             };
+
+            realDateClass = Date;
+            dateObjectMock = {
+                getFullYear: sinon.spy(function() {
+                    return currentYear;
+                }),
+                getMonth: sinon.spy(function() {
+                    return currentMonth;
+                }),
+                getDate: sinon.spy()
+            };
+            dateClassMock = sinon.spy(function() {
+                return dateObjectMock;
+            });
+            Date = dateClassMock;
+        });
+
+        afterEach(() => {
+            Date = realDateClass;
         });
 
         it('should clear the child elements from the table header and body', () => {
@@ -184,6 +209,23 @@ describe('Schedule Controller Tests', () => {
         });
 
         it('should build the table header for the selected 30 day month', () => {
+            const selectedMonth = 'month1';
+            const expectedChildren = [
+                {
+                    appendChild,
+                    children: [{ text: 'team' }],
+                    type: 'th'
+                }
+            ];
+            appendHeadersForMonth(expectedChildren)
+            scheduleController = scheduleControllerConstructor(schedule);
+
+            scheduleController.buildSchedule(tableHeaderMock, tableBodyMock, documentMock, selectedMonth);
+
+            assert.equal(JSON.stringify(tableHeaderMock.children), JSON.stringify(expectedChildren));
+        });
+
+        it('should build the table header for the selected 31 day month', () => {
             const selectedMonth = 'month2';
             const expectedChildren = [
                 {
@@ -192,11 +234,25 @@ describe('Schedule Controller Tests', () => {
                     type: 'th'
                 }
             ];
-            appendHeadersFor30DayMonth(expectedChildren)
+            appendHeadersForMonth(expectedChildren, 31)
             scheduleController = scheduleControllerConstructor(schedule);
 
             scheduleController.buildSchedule(tableHeaderMock, tableBodyMock, documentMock, selectedMonth);
 
+            assert.equal(dateClassMock.callCount, 3);
+            assert(dateClassMock.calledWithNew());
+            
+            assert.equal(dateClassMock.args[0][0], undefined);
+            assert.equal(dateObjectMock.getFullYear.callCount, 1);
+            
+            assert.equal(dateClassMock.args[1][0], `${selectedMonth} ${currentYear}`);
+            assert.equal(dateObjectMock.getMonth.callCount, 1);
+            
+            assert.equal(dateClassMock.args[2][0], currentYear);
+            assert.equal(dateClassMock.args[2][1], currentMonth + 1);
+            assert.equal(dateClassMock.args[2][2], 0);
+            assert.equal(dateObjectMock.getDate.callCount, 1);
+            
             assert.equal(JSON.stringify(tableHeaderMock.children), JSON.stringify(expectedChildren));
         });
     });

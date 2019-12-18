@@ -20,6 +20,7 @@
     "convert-excel-to-json": "^1.6.1"
   },
   "devDependencies": {
-    "mocha": "^6.2.2"
+    "mocha": "^6.2.2",
+    "sinon": "^7.5.0"
   }
 }

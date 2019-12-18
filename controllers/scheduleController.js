@@ -36,6 +36,10 @@ function scheduleController(schedule) {
         teamHeaderNode.appendChild(teamHeaderTextNode);
         tableHeader.appendChild(teamHeaderNode);
 
+        const currentYear = (new Date()).getFullYear();
+        const currentMonth = (new Date(`${selectedMonth} ${currentYear}`)).getMonth() + 1;
+        const numberOfDaysInCurrentMonth = (new Date(currentYear, currentMonth, 0)).getDate();
+
         for (let i = 1; i <= 30; i++) {
             const dateHeaderNode = document.createElement('th');
             const dateHeaderTextNode = document.createTextNode(`${i}`);
