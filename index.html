@@ -28,6 +28,9 @@
                         <tbody id='schedule-body'></tbody>
                     </table>
 
+                    <div></div>
+                    <br>
+
                     <table id="key-table" cellpadding="5">
                         <thead>
                             <tr>
@@ -66,16 +69,16 @@
             const monthSelector = document.getElementById('month-selector');
             scheduleController.addSelectorOptions(monthSelector, document);
 
-            // document.addEventListener('DOMContentLoaded', function () {
-            //     document.querySelector('select[name="month"]').onchange=changeEventHandler;
-            // }, false);
+            document.addEventListener('DOMContentLoaded', function () {
+                document.querySelector('select[name="month"]').onchange=changeEventHandler;
+            }, false);
 
-            // function changeEventHandler() {                
-            //     const scheduleHeader = document.getElementById('schedule-header');
-            //     const scheduleBody = document.getElementById('schedule-body');
+            function changeEventHandler() {                
+                const scheduleHeader = document.getElementById('schedule-header');
+                const scheduleBody = document.getElementById('schedule-body');
 
-            //     buildStatisticsTable(schedule[this.value], scheduleHeader, scheduleBody, document)
-            // }
+                scheduleController.buildSchedule(scheduleHeader, scheduleBody, document, this.value)
+            }
         </script>
     </body>
 </html>
