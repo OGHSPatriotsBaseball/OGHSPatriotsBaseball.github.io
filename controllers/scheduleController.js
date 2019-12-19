@@ -31,10 +31,11 @@ function scheduleController(schedule) {
             return;
         }
 
+        const headerRow = document.createElement('tr');
         const teamHeaderNode = document.createElement('th');
         const teamHeaderTextNode = document.createTextNode('team');
         teamHeaderNode.appendChild(teamHeaderTextNode);
-        tableHeader.appendChild(teamHeaderNode);
+        headerRow.appendChild(teamHeaderNode);
 
         const currentYear = (new Date()).getFullYear();
         const currentMonth = (new Date(`${selectedMonth} ${currentYear}`)).getMonth() + 1;
@@ -44,8 +45,10 @@ function scheduleController(schedule) {
             const dateHeaderNode = document.createElement('th');
             const dateHeaderTextNode = document.createTextNode(`${i}`);
             dateHeaderNode.appendChild(dateHeaderTextNode);
-            tableHeader.appendChild(dateHeaderNode);
+            headerRow.appendChild(dateHeaderNode);
         }
+
+        tableHeader.appendChild(headerRow);
     }
 
     return {
