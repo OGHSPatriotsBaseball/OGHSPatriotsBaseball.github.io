@@ -20,6 +20,24 @@ function scheduleController(schedule) {
             element.removeChild(element.firstChild);
         }
     }
+    
+    function buildScheduleHeader(document, selectedMonth, tableHeader) {
+        const headerRow = document.createElement('tr');
+        const teamHeaderNode = document.createElement('th');
+        const teamHeaderTextNode = document.createTextNode('team');
+        teamHeaderNode.appendChild(teamHeaderTextNode);
+        headerRow.appendChild(teamHeaderNode);
+        const currentYear = (new Date()).getFullYear();
+        const currentMonth = (new Date(`${selectedMonth} ${currentYear}`)).getMonth() + 1;
+        const numberOfDaysInCurrentMonth = (new Date(currentYear, currentMonth, 0)).getDate();
+        for (let i = 1; i <= numberOfDaysInCurrentMonth; i++) {
+            const dateHeaderNode = document.createElement('th');
+            const dateHeaderTextNode = document.createTextNode(`${i}`);
+            dateHeaderNode.appendChild(dateHeaderTextNode);
+            headerRow.appendChild(dateHeaderNode);
+        }
+        tableHeader.appendChild(headerRow);
+    }
 
     function buildSchedule(tableHeader, tableBody, document, selectedMonth) {
         removeAllChildNodes(tableHeader);
@@ -31,24 +49,7 @@ function scheduleController(schedule) {
             return;
         }
 
-        const headerRow = document.createElement('tr');
-        const teamHeaderNode = document.createElement('th');
-        const teamHeaderTextNode = document.createTextNode('team');
-        teamHeaderNode.appendChild(teamHeaderTextNode);
-        headerRow.appendChild(teamHeaderNode);
-
-        const currentYear = (new Date()).getFullYear();
-        const currentMonth = (new Date(`${selectedMonth} ${currentYear}`)).getMonth() + 1;
-        const numberOfDaysInCurrentMonth = (new Date(currentYear, currentMonth, 0)).getDate();
-
-        for (let i = 1; i <= numberOfDaysInCurrentMonth; i++) {
-            const dateHeaderNode = document.createElement('th');
-            const dateHeaderTextNode = document.createTextNode(`${i}`);
-            dateHeaderNode.appendChild(dateHeaderTextNode);
-            headerRow.appendChild(dateHeaderNode);
-        }
-
-        tableHeader.appendChild(headerRow);
+        buildScheduleHeader(document, selectedMonth, tableHeader);
     }
 
     return {
