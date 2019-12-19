@@ -40,7 +40,7 @@ function scheduleController(schedule) {
         const currentMonth = (new Date(`${selectedMonth} ${currentYear}`)).getMonth() + 1;
         const numberOfDaysInCurrentMonth = (new Date(currentYear, currentMonth, 0)).getDate();
 
-        for (let i = 1; i <= 30; i++) {
+        for (let i = 1; i <= numberOfDaysInCurrentMonth; i++) {
             const dateHeaderNode = document.createElement('th');
             const dateHeaderTextNode = document.createTextNode(`${i}`);
             dateHeaderNode.appendChild(dateHeaderTextNode);

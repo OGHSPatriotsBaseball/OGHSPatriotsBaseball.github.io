@@ -40,7 +40,7 @@ function removeChild(childToRemove) {
     }
 }
 
-function appendHeadersForMonth(expectedChildren, days = 30) {
+function appendHeadersForMonth(expectedChildren, days) {
     for (let i = 1; i <= days; i++) {
         expectedChildren.push({
             appendChild,
@@ -119,6 +119,7 @@ describe('Schedule Controller Tests', () => {
         let realDateClass;
         let dateClassMock;
         let dateObjectMock;
+        let numberOfDaysInCurrentMonth;
         const currentYear = 1996;
         const currentMonth = 2;
         const emptySchedule = {};
@@ -166,6 +167,8 @@ describe('Schedule Controller Tests', () => {
             };
 
             realDateClass = Date;
+
+            numberOfDaysInCurrentMonth = 30;
             dateObjectMock = {
                 getFullYear: sinon.spy(function() {
                     return currentYear;
@@ -173,7 +176,9 @@ describe('Schedule Controller Tests', () => {
                 getMonth: sinon.spy(function() {
                     return currentMonth;
                 }),
-                getDate: sinon.spy()
+                getDate: sinon.spy(function() {
+                    return numberOfDaysInCurrentMonth;
+                })
             };
             dateClassMock = sinon.spy(function() {
                 return dateObjectMock;
@@ -208,7 +213,7 @@ describe('Schedule Controller Tests', () => {
             assert.equal(JSON.stringify(tableHeaderMock.children), JSON.stringify(expectedChildren));
         });
 
-        it('should build the table header for the selected 30 day month', () => {
+        it('should call out to the date class when constructing the header', () => {
             const selectedMonth = 'month1';
             const expectedChildren = [
                 {
@@ -217,24 +222,7 @@ describe('Schedule Controller Tests', () => {
                     type: 'th'
                 }
             ];
-            appendHeadersForMonth(expectedChildren)
-            scheduleController = scheduleControllerConstructor(schedule);
-
-            scheduleController.buildSchedule(tableHeaderMock, tableBodyMock, documentMock, selectedMonth);
-
-            assert.equal(JSON.stringify(tableHeaderMock.children), JSON.stringify(expectedChildren));
-        });
-
-        it('should build the table header for the selected 31 day month', () => {
-            const selectedMonth = 'month2';
-            const expectedChildren = [
-                {
-                    appendChild,
-                    children: [{ text: 'team' }],
-                    type: 'th'
-                }
-            ];
-            appendHeadersForMonth(expectedChildren, 31)
+            appendHeadersForMonth(expectedChildren, numberOfDaysInCurrentMonth)
             scheduleController = scheduleControllerConstructor(schedule);
 
             scheduleController.buildSchedule(tableHeaderMock, tableBodyMock, documentMock, selectedMonth);
@@ -252,6 +240,39 @@ describe('Schedule Controller Tests', () => {
             assert.equal(dateClassMock.args[2][1], currentMonth + 1);
             assert.equal(dateClassMock.args[2][2], 0);
             assert.equal(dateObjectMock.getDate.callCount, 1);
+        });
+
+        it('should build the table header for the selected 30 day month', () => {
+            const selectedMonth = 'month1';
+            const expectedChildren = [
+                {
+                    appendChild,
+                    children: [{ text: 'team' }],
+                    type: 'th'
+                }
+            ];
+            appendHeadersForMonth(expectedChildren, numberOfDaysInCurrentMonth)
+            scheduleController = scheduleControllerConstructor(schedule);
+
+            scheduleController.buildSchedule(tableHeaderMock, tableBodyMock, documentMock, selectedMonth);
+
+            assert.equal(JSON.stringify(tableHeaderMock.children), JSON.stringify(expectedChildren));
+        });
+
+        it('should build the table header for the selected 31 day month', () => {
+            const selectedMonth = 'month2';
+            const expectedChildren = [
+                {
+                    appendChild,
+                    children: [{ text: 'team' }],
+                    type: 'th'
+                }
+            ];
+            numberOfDaysInCurrentMonth = 31;
+            appendHeadersForMonth(expectedChildren, numberOfDaysInCurrentMonth)
+            scheduleController = scheduleControllerConstructor(schedule);
+
+            scheduleController.buildSchedule(tableHeaderMock, tableBodyMock, documentMock, selectedMonth);
             
             assert.equal(JSON.stringify(tableHeaderMock.children), JSON.stringify(expectedChildren));
         });
