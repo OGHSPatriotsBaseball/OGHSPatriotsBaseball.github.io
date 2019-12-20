@@ -58,7 +58,7 @@ function createBodyForMonth(scheduleForMonth, daysInTheMonth) {
             children: [
                 {
                     appendChild,
-                    children: [{ text: `${scheduleForATeam.team}` }],
+                    children: [{ text: `${scheduleForATeam.TEAM}` }],
                     type: 'td'
                 }
             ],
@@ -154,24 +154,24 @@ describe('Schedule Controller Tests', () => {
         const schedule = {
             month1: [
                 {
-                    team: 'team1',
+                    TEAM: 'team1',
                     1: 'VAR',
                     7: 'JV'
                 },
                 {
-                    team: 'team2',
+                    TEAM: 'team2',
                     2: 'JV',
                     3: 'BC'
                 }
             ],
             month2: [
                 {
-                    team: 'team2',
+                    TEAM: 'team2',
                     4: 'VAR',
                     20: 'VAR'
                 },
                 {
-                    team: 'team3',
+                    TEAM: 'team3',
                     6: 'JV',
                     9: 'JV'
                 }
@@ -268,7 +268,7 @@ describe('Schedule Controller Tests', () => {
                     children: [
                         {
                             appendChild,
-                            children: [{ text: 'team' }],
+                            children: [{ text: 'TEAM' }],
                             type: 'th'
                         }
                     ],
@@ -291,7 +291,7 @@ describe('Schedule Controller Tests', () => {
                     children: [
                         {
                             appendChild,
-                            children: [{ text: 'team' }],
+                            children: [{ text: 'TEAM' }],
                             type: 'th'
                         }
                     ],

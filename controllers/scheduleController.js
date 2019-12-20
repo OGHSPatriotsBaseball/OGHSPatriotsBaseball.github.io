@@ -24,7 +24,7 @@ function scheduleController(schedule) {
     function buildScheduleHeader(document, numberOfDaysInCurrentMonth, tableHeader) {
         const headerRow = document.createElement('tr');
         const teamHeaderNode = document.createElement('th');
-        const teamHeaderTextNode = document.createTextNode('team');
+        const teamHeaderTextNode = document.createTextNode('TEAM');
         teamHeaderNode.appendChild(teamHeaderTextNode);
         headerRow.appendChild(teamHeaderNode);
         for (let dayOfTheMonth = 1; dayOfTheMonth <= numberOfDaysInCurrentMonth; dayOfTheMonth++) {
@@ -40,7 +40,7 @@ function scheduleController(schedule) {
         scheduleForSelectedMonth.forEach(scheduleForATeam => {
             const teamRow = document.createElement('tr');
             const teamNameNode = document.createElement('td');
-            const teamNameTextNode = document.createTextNode(scheduleForATeam.team);
+            const teamNameTextNode = document.createTextNode(scheduleForATeam.TEAM);
             teamNameNode.appendChild(teamNameTextNode);
             teamRow.appendChild(teamNameNode);
             for (let dayOfTheMonth = 1; dayOfTheMonth <= numberOfDaysInCurrentMonth; dayOfTheMonth++) {
