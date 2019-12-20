@@ -40,14 +40,42 @@ function removeChild(childToRemove) {
     }
 }
 
-function appendHeadersForMonth(expectedChildren, days) {
-    for (let i = 1; i <= days; i++) {
+function appendHeadersForMonth(expectedChildren, daysInTheMonth) {
+    for (let i = 1; i <= daysInTheMonth; i++) {
         expectedChildren.push({
             appendChild,
             children: [{ text: `${i}` }],
             type: 'th'
         });
     }
+}
+
+function createBodyForMonth(scheduleForMonth, daysInTheMonth) {
+    let expectedChildren = [];
+    scheduleForMonth.forEach(scheduleForATeam => {
+        const rowForATeam = {
+            appendChild,
+            children: [
+                {
+                    appendChild,
+                    children: [{ text: `${scheduleForATeam.team}` }],
+                    type: 'td'
+                }
+            ],
+            type: 'tr'
+        };
+        expectedChildren.push(rowForATeam);
+        for (let i = 1; i <= daysInTheMonth; i++) {
+            const fieldUsage = scheduleForATeam[i] || ''; 
+            rowForATeam.children.push({
+                appendChild,
+                children: [{ text: fieldUsage }],
+                type: 'td'
+            });
+        }
+    });
+
+    return expectedChildren;
 }
 
 describe('Schedule Controller Tests', () => {
@@ -170,17 +198,17 @@ describe('Schedule Controller Tests', () => {
 
             numberOfDaysInCurrentMonth = 30;
             dateObjectMock = {
-                getFullYear: sinon.spy(function() {
+                getFullYear: sinon.spy(function () {
                     return currentYear;
                 }),
-                getMonth: sinon.spy(function() {
+                getMonth: sinon.spy(function () {
                     return currentMonth;
                 }),
-                getDate: sinon.spy(function() {
+                getDate: sinon.spy(function () {
                     return numberOfDaysInCurrentMonth;
                 })
             };
-            dateClassMock = sinon.spy(function() {
+            dateClassMock = sinon.spy(function () {
                 return dateObjectMock;
             });
             Date = dateClassMock;
@@ -219,10 +247,10 @@ describe('Schedule Controller Tests', () => {
                 {
                     appendChild,
                     children: [
-                        { 
+                        {
                             appendChild,
                             children: [{ text: 'team' }],
-                            type: 'th' 
+                            type: 'th'
                         }
                     ],
                     type: 'tr'
@@ -235,13 +263,13 @@ describe('Schedule Controller Tests', () => {
 
             assert.equal(dateClassMock.callCount, 3);
             assert(dateClassMock.calledWithNew());
-            
+
             assert.equal(dateClassMock.args[0][0], undefined);
             assert.equal(dateObjectMock.getFullYear.callCount, 1);
-            
+
             assert.equal(dateClassMock.args[1][0], `${selectedMonth} ${currentYear}`);
             assert.equal(dateObjectMock.getMonth.callCount, 1);
-            
+
             assert.equal(dateClassMock.args[2][0], currentYear);
             assert.equal(dateClassMock.args[2][1], currentMonth + 1);
             assert.equal(dateClassMock.args[2][2], 0);
@@ -254,10 +282,10 @@ describe('Schedule Controller Tests', () => {
                 {
                     appendChild,
                     children: [
-                        { 
+                        {
                             appendChild,
                             children: [{ text: 'team' }],
-                            type: 'th' 
+                            type: 'th'
                         }
                     ],
                     type: 'tr'
@@ -277,10 +305,10 @@ describe('Schedule Controller Tests', () => {
                 {
                     appendChild,
                     children: [
-                        { 
+                        {
                             appendChild,
                             children: [{ text: 'team' }],
-                            type: 'th' 
+                            type: 'th'
                         }
                     ],
                     type: 'tr'
@@ -291,31 +319,18 @@ describe('Schedule Controller Tests', () => {
             scheduleController = scheduleControllerConstructor(schedule);
 
             scheduleController.buildSchedule(tableHeaderMock, tableBodyMock, documentMock, selectedMonth);
-            
+
             assert.equal(JSON.stringify(tableHeaderMock.children), JSON.stringify(expectedChildren));
         });
 
-        it.skip('should build the table body for the selected 30 day month', () => {
+        it('should build the table body for the selected 30 day month', () => {
             const selectedMonth = 'month1';
-            const expectedChildren = [
-                {
-                    appendChild,
-                    children: [
-                        { 
-                            appendChild,
-                            children: [{ text: 'team' }],
-                            type: 'th' 
-                        }
-                    ],
-                    type: 'tr'
-                }
-            ];
-            appendHeadersForMonth(expectedChildren[0].children, numberOfDaysInCurrentMonth)
+            const expectedChildren = createBodyForMonth(schedule[selectedMonth], numberOfDaysInCurrentMonth);
             scheduleController = scheduleControllerConstructor(schedule);
 
             scheduleController.buildSchedule(tableHeaderMock, tableBodyMock, documentMock, selectedMonth);
 
-            assert.equal(JSON.stringify(tableHeaderMock.children), JSON.stringify(expectedChildren));
+            assert.equal(JSON.stringify(tableBodyMock.children), JSON.stringify(expectedChildren));
         });
 
         it.skip('should build the table body for the selected 31 day month', () => {
@@ -323,17 +338,17 @@ describe('Schedule Controller Tests', () => {
             const expectedChildren = [
                 {
                     appendChild,
-                    children: [{ text: 'team' }],
-                    type: 'th'
+                    children: [],
+                    type: 'tr'
                 }
             ];
             numberOfDaysInCurrentMonth = 31;
-            appendHeadersForMonth(expectedChildren[0].children, numberOfDaysInCurrentMonth)
+            createBodyForMonth(schedule[selectedMonth], expectedChildren, numberOfDaysInCurrentMonth);
             scheduleController = scheduleControllerConstructor(schedule);
 
             scheduleController.buildSchedule(tableHeaderMock, tableBodyMock, documentMock, selectedMonth);
-            
-            assert.equal(JSON.stringify(tableHeaderMock.children), JSON.stringify(expectedChildren));
+
+            assert.equal(JSON.stringify(tableBodyMock.children), JSON.stringify(expectedChildren));
         });
     });
 });
