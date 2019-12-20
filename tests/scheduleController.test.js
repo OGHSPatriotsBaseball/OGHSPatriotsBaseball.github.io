@@ -239,37 +239,21 @@ describe('Schedule Controller Tests', () => {
             scheduleController.buildSchedule(tableHeaderMock, tableBodyMock, documentMock, selectedMonthThatDoesNotExist);
 
             assert.equal(JSON.stringify(tableHeaderMock.children), JSON.stringify(expectedChildren));
+            assert.equal(JSON.stringify(tableBodyMock.children), JSON.stringify(expectedChildren));
         });
 
-        it('should call out to the date class when constructing the header', () => {
+        it('should call out to the date class when constructing the schedule', () => {
             const selectedMonth = 'month1';
-            const expectedChildren = [
-                {
-                    appendChild,
-                    children: [
-                        {
-                            appendChild,
-                            children: [{ text: 'team' }],
-                            type: 'th'
-                        }
-                    ],
-                    type: 'tr'
-                }
-            ];
-            appendHeadersForMonth(expectedChildren[0].children, numberOfDaysInCurrentMonth)
             scheduleController = scheduleControllerConstructor(schedule);
 
             scheduleController.buildSchedule(tableHeaderMock, tableBodyMock, documentMock, selectedMonth);
 
             assert.equal(dateClassMock.callCount, 3);
             assert(dateClassMock.calledWithNew());
-
             assert.equal(dateClassMock.args[0][0], undefined);
             assert.equal(dateObjectMock.getFullYear.callCount, 1);
-
             assert.equal(dateClassMock.args[1][0], `${selectedMonth} ${currentYear}`);
             assert.equal(dateObjectMock.getMonth.callCount, 1);
-
             assert.equal(dateClassMock.args[2][0], currentYear);
             assert.equal(dateClassMock.args[2][1], currentMonth + 1);
             assert.equal(dateClassMock.args[2][2], 0);
