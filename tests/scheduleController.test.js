@@ -317,17 +317,10 @@ describe('Schedule Controller Tests', () => {
             assert.equal(JSON.stringify(tableBodyMock.children), JSON.stringify(expectedChildren));
         });
 
-        it.skip('should build the table body for the selected 31 day month', () => {
+        it('should build the table body for the selected 31 day month', () => {
             const selectedMonth = 'month2';
-            const expectedChildren = [
-                {
-                    appendChild,
-                    children: [],
-                    type: 'tr'
-                }
-            ];
             numberOfDaysInCurrentMonth = 31;
-            createBodyForMonth(schedule[selectedMonth], expectedChildren, numberOfDaysInCurrentMonth);
+            const expectedChildren = createBodyForMonth(schedule[selectedMonth], numberOfDaysInCurrentMonth);
             scheduleController = scheduleControllerConstructor(schedule);
 
             scheduleController.buildSchedule(tableHeaderMock, tableBodyMock, documentMock, selectedMonth);

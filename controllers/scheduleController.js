@@ -36,6 +36,24 @@ function scheduleController(schedule) {
         tableHeader.appendChild(headerRow);
     }
 
+    function buildScheduleBody(scheduleForSelectedMonth, document, numberOfDaysInCurrentMonth, tableBody) {
+        scheduleForSelectedMonth.forEach(scheduleForATeam => {
+            const teamRow = document.createElement('tr');
+            const teamNameNode = document.createElement('td');
+            const teamNameTextNode = document.createTextNode(scheduleForATeam.team);
+            teamNameNode.appendChild(teamNameTextNode);
+            teamRow.appendChild(teamNameNode);
+            for (let dayOfTheMonth = 1; dayOfTheMonth <= numberOfDaysInCurrentMonth; dayOfTheMonth++) {
+                const fieldUsage = scheduleForATeam[dayOfTheMonth] || '';
+                const fieldUsageNode = document.createElement('td');
+                const fieldUsageTextNode = document.createTextNode(fieldUsage);
+                fieldUsageNode.appendChild(fieldUsageTextNode);
+                teamRow.appendChild(fieldUsageNode);
+            }
+            tableBody.appendChild(teamRow);
+        });
+    }
+
     function buildSchedule(tableHeader, tableBody, document, selectedMonth) {
         removeAllChildNodes(tableHeader);
         removeAllChildNodes(tableBody);
@@ -51,24 +69,7 @@ function scheduleController(schedule) {
         const numberOfDaysInCurrentMonth = (new Date(currentYear, currentMonth, 0)).getDate();
 
         buildScheduleHeader(document, numberOfDaysInCurrentMonth, tableHeader);
-
-        scheduleForSelectedMonth.forEach(scheduleForATeam => {
-            const teamRow = document.createElement('tr');
-            const teamNameNode = document.createElement('td');
-            const teamNameTextNode = document.createTextNode(scheduleForATeam.team);
-            teamNameNode.appendChild(teamNameTextNode);
-            teamRow.appendChild(teamNameNode);
-
-            for (let dayOfTheMonth = 1; dayOfTheMonth <= 30; dayOfTheMonth++) {
-                const fieldUsage = scheduleForATeam[dayOfTheMonth] || '';
-                const fieldUsageNode = document.createElement('td');
-                const fieldUsageTextNode = document.createTextNode(fieldUsage);
-                fieldUsageNode.appendChild(fieldUsageTextNode);
-                teamRow.appendChild(fieldUsageNode);
-            }
-
-            tableBody.appendChild(teamRow);
-        });
+        buildScheduleBody(scheduleForSelectedMonth, document, numberOfDaysInCurrentMonth, tableBody);
     }
 
     return {
