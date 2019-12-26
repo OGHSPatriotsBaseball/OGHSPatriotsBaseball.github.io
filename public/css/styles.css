@@ -6,6 +6,14 @@ html,body,h1,h2,h3,h4,h5,h6 {
 table {
     border: 3px black solid;
     border-collapse: collapse;
+}
+
+#schedule-table {
+    text-align: center;
+    width: 90%;
+}
+
+#key-table {
     text-align: left;
     width: 50%;
 }
