@@ -16,8 +16,20 @@ table {
 
 #key-table {
     text-align: left;
-    width: 30%;
 }
+
+@media (min-width:601px){
+    #key-table {
+        width: 30%;
+    }
+}
+
+@media (max-width:600px) {
+    #key-table {
+        width: 50%;
+    }
+}
+
 
 th {
     border-bottom: 2px black solid;
