@@ -3,10 +3,6 @@ html,body,h1,h2,h3,h4,h5,h6 {
     text-transform: uppercase;
 }
 
-.table-wrapper {
-    overflow-x: auto;
-}
-
 table {
     border: 3px black solid;
     border-collapse: collapse;
